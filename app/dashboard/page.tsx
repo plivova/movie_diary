@@ -6,7 +6,7 @@ import { MovieRepository } from "@/app/api/repositories/movieRepository";
 import { MovieCard } from "@/app/components/movieCard";
 import { SearchBar } from "@/app/components/searchBar";
 import { Pagination } from "@/app/components/pagination";
-import {useWatchlist} from "@/app/hooks/useWatchlist";
+import { useWatchlist } from "@/app/hooks/useWatchlist";
 
 export default function DashboardPage() {
     const [results, setResults] = useState<MoviesResult>({ movies: [], paging: { currentPage: 1, totalPages: 0 }});
