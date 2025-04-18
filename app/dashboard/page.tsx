@@ -6,12 +6,15 @@ import { MovieRepository } from "@/app/api/repositories/movieRepository";
 import { MovieCard } from "@/app/components/movieCard";
 import { SearchBar } from "@/app/components/searchBar";
 import { Pagination } from "@/app/components/pagination";
+import {useWatchlist} from "@/app/hooks/useWatchlist";
 
-export default function Home() {
+export default function DashboardPage() {
     const [results, setResults] = useState<MoviesResult>({ movies: [], paging: { currentPage: 1, totalPages: 0 }});
     const searchParams = useSearchParams();
     const query = searchParams.get("query");
     const currentPage = Number(searchParams.get('page')) || 1;
+
+    const { toggleWatchlist, isInWatchlist } = useWatchlist();
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -36,7 +39,12 @@ export default function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     {results.movies.length > 0 ? (
                         results.movies.map((movie) => (
-                            <MovieCard key={movie.id} movie={movie} />
+                            <MovieCard
+                                key={movie.id}
+                                movie={movie}
+                                toggleWatchlist={toggleWatchlist} // Each card can add or remove itself from the watchlist
+                                isInWatchlist={isInWatchlist} // Each card knows if its movie is in the watchlist
+                            />
                         ))
                     ) : (
                         <p className="text-center text-gray-500 col-span-full">

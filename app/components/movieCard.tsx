@@ -1,16 +1,28 @@
 import Image from 'next/image';
 import { Film, Heart } from 'lucide-react';
+import toast from 'react-hot-toast';
 
-export function MovieCard({ movie }: { movie: Movie }) {
+type MovieCardProps = {
+    movie: Movie;
+    toggleWatchlist: (movie: Movie) => void;
+    isInWatchlist: (movie: Movie) => boolean;
+};
+
+export function MovieCard({ movie, toggleWatchlist, isInWatchlist }: MovieCardProps) {
     const handleAddToWatchlist = () => {
-        // TODO: Save to localStorage
-        console.log("Add to watchlist:", movie);
+        toggleWatchlist(movie);
+        const message = isInWatchlist(movie)
+            ? "Removed from watchlist 🎞️"
+            : "Added to watchlist! 🎥";
+        toast.success(message);
     };
 
     const handleAddToDiary = () => {
         // TODO: Save to localStorage
         console.log("Add to diary:", movie);
     };
+
+    const inWatchlist = isInWatchlist(movie);
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden w-60">
@@ -32,7 +44,7 @@ export function MovieCard({ movie }: { movie: Movie }) {
                     <div className="flex gap-2">
                         <button
                             onClick={handleAddToWatchlist}
-                            className="hover:text-indigo-500"
+                            className={`hover:text-indigo-500 ${inWatchlist ? "text-indigo-500" : "text-gray-400"}`}
                             title="Add to Watchlist"
                         >
                             <Film className="w-5 h-5" />

@@ -1,4 +1,4 @@
-export default function Diary(){
+export default function DiaryPage(){
     return (
         <div></div>
     )

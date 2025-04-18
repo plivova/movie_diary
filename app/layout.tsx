@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Menu from "./components/menu";
 import React from "react";
-import Pagination from "@/app/components/pagination";
+import { Toaster } from 'react-hot-toast';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +26,7 @@ export default function RootLayout({
       >
       <Menu />
       {children}
+      <Toaster position="top-left" />
       </body>
     </html>
   );
