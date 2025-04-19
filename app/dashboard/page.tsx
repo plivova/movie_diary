@@ -7,6 +7,7 @@ import { MovieCard } from "@/app/components/movieCard";
 import { SearchBar } from "@/app/components/searchBar";
 import { Pagination } from "@/app/components/pagination";
 import { useWatchlist } from "@/app/hooks/useWatchlist";
+import {useDiary} from "@/app/hooks/useDiary";
 
 export default function DashboardPage() {
     const [results, setResults] = useState<MoviesResult>({ movies: [], paging: { currentPage: 1, totalPages: 0 }});
@@ -15,6 +16,7 @@ export default function DashboardPage() {
     const currentPage = Number(searchParams.get('page')) || 1;
 
     const { toggleWatchlist, isInWatchlist } = useWatchlist();
+    const { toggleDiary, isInDiary } = useDiary();
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -44,6 +46,8 @@ export default function DashboardPage() {
                                 movie={movie}
                                 toggleWatchlist={toggleWatchlist} // Each card can add or remove itself from the watchlist
                                 isInWatchlist={isInWatchlist} // Each card knows if its movie is in the watchlist
+                                toggleDiary={toggleDiary}
+                                isInDiary={isInDiary}
                             />
                         ))
                     ) : (

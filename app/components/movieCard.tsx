@@ -6,9 +6,11 @@ type MovieCardProps = {
     movie: Movie;
     toggleWatchlist: (movie: Movie) => void;
     isInWatchlist: (movie: Movie) => boolean;
+    toggleDiary: (movie: Movie) => void;
+    isInDiary: (movie: Movie) => boolean;
 };
 
-export function MovieCard({ movie, toggleWatchlist, isInWatchlist }: MovieCardProps) {
+export function MovieCard({ movie, toggleWatchlist, isInWatchlist, toggleDiary, isInDiary }: MovieCardProps) {
     const handleAddToWatchlist = () => {
         toggleWatchlist(movie);
         const message = isInWatchlist(movie)
@@ -18,11 +20,15 @@ export function MovieCard({ movie, toggleWatchlist, isInWatchlist }: MovieCardPr
     };
 
     const handleAddToDiary = () => {
-        // TODO: Save to localStorage
-        console.log("Add to diary:", movie);
+        toggleDiary(movie);
+        const message = isInDiary(movie)
+            ? "Removed from diary"
+            : "Added to diary";
+        toast.success(message);
     };
 
     const inWatchlist = isInWatchlist(movie);
+    const inDiary = isInDiary(movie);
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden w-60">
@@ -40,7 +46,7 @@ export function MovieCard({ movie, toggleWatchlist, isInWatchlist }: MovieCardPr
                         ⭐ {movie.voteAverage} · {movie.releaseDate}
                     </p>
 
-                    {/*Buttons handling adding movies to watchlist and logging movies to the diary */}
+                    {/*Buttons handling adding movies to the watch list and logging movies to the diary */}
                     <div className="flex gap-2">
                         <button
                             onClick={handleAddToWatchlist}
@@ -51,7 +57,7 @@ export function MovieCard({ movie, toggleWatchlist, isInWatchlist }: MovieCardPr
                         </button>
                         <button
                             onClick={handleAddToDiary}
-                            className="hover:text-red-500"
+                            className={`hover:text-red-500 ${inDiary ? "text-red-500" : "text-gray-400"}`}
                             title="Add to Diary"
                         >
                             <Heart className="w-5 h-5" />

@@ -3,9 +3,11 @@
 import React from "react";
 import { MovieCard } from "@/app/components/movieCard";
 import { useWatchlist } from "@/app/hooks/useWatchlist";
+import { useDiary } from "@/app/hooks/useDiary";
 
 export default function WatchlistPage() {
     const { watchlist, toggleWatchlist, isInWatchlist } = useWatchlist();
+    const { toggleDiary, isInDiary } = useDiary();
 
     return (
         <div className="p-8">
@@ -20,6 +22,8 @@ export default function WatchlistPage() {
                             movie={movie}
                             toggleWatchlist={toggleWatchlist}
                             isInWatchlist={isInWatchlist}
+                            toggleDiary={toggleDiary}
+                            isInDiary={isInDiary}
                         />
                     ))}
                     </div>

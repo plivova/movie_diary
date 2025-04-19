@@ -15,7 +15,6 @@ export function useWatchlist() {
         }
     }, [hasMounted]);
 
-
     const saveToLocalStorage = (items: Movie[]) => {
         localStorage.setItem("watchlist", JSON.stringify(items));
     };
