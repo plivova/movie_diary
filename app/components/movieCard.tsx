@@ -11,8 +11,16 @@ type MovieCardProps = {
 };
 
 export function MovieCard({ movie, toggleWatchlist, isInWatchlist, toggleDiary, isInDiary }: MovieCardProps) {
+    const inWatchlist = isInWatchlist(movie);
+    const inDiary = isInDiary(movie);
+
     const handleAddToWatchlist = () => {
         toggleWatchlist(movie);
+
+        // The movie can only be in the watchlist if it is not in the diary.
+        if (inDiary){
+            toggleDiary(movie);
+        }
         const message = isInWatchlist(movie)
             ? "Removed from watchlist 🎞️"
             : "Added to watchlist! 🎥";
@@ -21,14 +29,17 @@ export function MovieCard({ movie, toggleWatchlist, isInWatchlist, toggleDiary, 
 
     const handleAddToDiary = () => {
         toggleDiary(movie);
+
+        // The movie can only be in the diary if it is not in the watchlist.
+        if (inWatchlist){
+            toggleWatchlist(movie);
+        }
         const message = isInDiary(movie)
             ? "Removed from diary"
             : "Added to diary";
         toast.success(message);
     };
 
-    const inWatchlist = isInWatchlist(movie);
-    const inDiary = isInDiary(movie);
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden w-60">
