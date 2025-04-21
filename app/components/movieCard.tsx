@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { Film, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useState } from "react";
+import { DiaryModal } from "@/app/components/diaryModal";
 
 type MovieCardProps = {
     movie: Movie;
@@ -13,6 +15,8 @@ type MovieCardProps = {
 export function MovieCard({ movie, toggleWatchlist, isInWatchlist, toggleDiary, isInDiary }: MovieCardProps) {
     const inWatchlist = isInWatchlist(movie);
     const inDiary = isInDiary(movie);
+
+    const [isDiaryModalOpen, setIsDiaryModalOpen] = useState(false);
 
     const handleAddToWatchlist = () => {
         toggleWatchlist(movie);
@@ -35,11 +39,10 @@ export function MovieCard({ movie, toggleWatchlist, isInWatchlist, toggleDiary, 
             toggleWatchlist(movie);
         }
         const message = isInDiary(movie)
-            ? "Removed from diary"
-            : "Added to diary";
+            ? "Removed from diary 📔"
+            : "Added to diary! 📝";
         toast.success(message);
     };
-
 
     return (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden w-60">
@@ -57,27 +60,45 @@ export function MovieCard({ movie, toggleWatchlist, isInWatchlist, toggleDiary, 
                         ⭐ {movie.voteAverage} · {movie.releaseDate}
                     </p>
 
-                    {/*Buttons handling adding movies to the watch list and logging movies to the diary */}
+                    {/* Buttons handling adding movies to the watch list and logging movies to the diary */}
                     <div className="flex gap-2">
                         <button
                             onClick={handleAddToWatchlist}
-                            className={`hover:text-indigo-500 ${inWatchlist ? "text-indigo-500" : "text-gray-400"}`}
+                            className="hover:text-indigo-500"
                             title="Add to Watchlist"
                         >
-                            <Film className="w-5 h-5" />
+                            <Film className={`w-5 h-5 transition-all duration-200
+                            ${inWatchlist ? "text-indigo-500" : "text-gray-400"}
+                            `} />
                         </button>
                         <button
-                            onClick={handleAddToDiary}
-                            className={`hover:text-red-500 ${inDiary ? "text-red-500" : "text-gray-400"}`}
+                            // Only open modal if movie is not in the diary
+                            onClick={() => {
+                                if (inDiary) {
+                                    handleAddToDiary();
+                                } else {
+                                    setIsDiaryModalOpen(true)
+                                }
+                            }}
+                            className="hover:text-red-500"
                             title="Add to Diary"
                         >
-                            <Heart className="w-5 h-5" />
+                            <Heart className={`w-5 h-5 transition-all duration-200
+                            ${inDiary ? "text-red-500 fill-red-500" : "text-gray-400"}
+                            `} />
                         </button>
-
+                        <DiaryModal
+                            isOpen={isDiaryModalOpen}
+                            onClose={() => setIsDiaryModalOpen(false)}
+                            movie={movie}
+                            onAdd={handleAddToDiary}
+                        />
                     </div>
                 </div>
             </div>
         </div>
     );
+
+
 }
 

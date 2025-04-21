@@ -46,7 +46,8 @@ export default function DashboardPage() {
                                 movie={movie}
                                 toggleWatchlist={toggleWatchlist} // Each card can add or remove itself from the watchlist
                                 isInWatchlist={isInWatchlist} // Each card knows if its movie is in the watchlist
-                                toggleDiary={toggleDiary}
+                                toggleDiary={(movie) =>
+                                    toggleDiary({ ...movie, watchedDate: new Date(), rating: 0 })}
                                 isInDiary={isInDiary}
                             />
                         ))

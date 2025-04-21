@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { useHasMounted } from "@/app/hooks/useHasMounted";
 
+type DiaryItem = Movie & {
+    watchedDate: Date;
+    rating: number;
+}
+
 export function useDiary() {
-    const [diary, setDiary] = useState<Movie[]>([]);
+    const [diary, setDiary] = useState<DiaryItem[]>([]);
     const hasMounted = useHasMounted();
 
     // Load from localStorage
@@ -24,7 +29,7 @@ export function useDiary() {
     };
 
     // If the movie is already in the list, it removes it. If the movie is not in the list, it adds it.
-    const toggleDiary = (movie: Movie) => {
+    const toggleDiary = (movie: DiaryItem) => {
         const isInList = diary.some((m) => m.id === movie.id);
         const updated = isInList
             ? diary.filter((m) => m.id !== movie.id)

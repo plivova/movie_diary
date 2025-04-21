@@ -22,7 +22,8 @@ export default function WatchlistPage() {
                             movie={movie}
                             toggleWatchlist={toggleWatchlist}
                             isInWatchlist={isInWatchlist}
-                            toggleDiary={toggleDiary}
+                            toggleDiary={(movie) =>
+                                toggleDiary({ ...movie, watchedDate: new Date(), rating: 0 })}
                             isInDiary={isInDiary}
                         />
                     ))}
