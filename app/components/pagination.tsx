@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-export function Pagination({totalPages, currentPage}: { totalPages: number, currentPage?: number }) {
+export function Pagination({totalPages, currentPage = 1}: { totalPages: number, currentPage?: number }) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
