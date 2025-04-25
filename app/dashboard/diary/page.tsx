@@ -1,10 +1,19 @@
 'use client';
 
+import { DiaryModal } from "@/app/components/diaryModal";
 import { useDiary } from "@/app/hooks/useDiary";
 import Image from 'next/image';
+import { useState } from "react";
 
 export default function DiaryPage(){
-    const { diary } = useDiary();
+    const { diary, toggleDiary } = useDiary();
+    const [isDiaryModalOpen, setIsDiaryModalOpen] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState<Movie>();
+
+    const handleEdit = (movie: Movie) => {
+        setSelectedMovie(movie);
+        setIsDiaryModalOpen(true);
+    }
 
     return (
         <div className="flex justify-center items-start min-h-screen p-4">
@@ -47,8 +56,23 @@ export default function DiaryPage(){
                                 </td>
                                 <td className="px-6 py-4">{movie.rating}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <a href="#edit" className="px-2 font-medium text-blue-600 hover:underline">Edit</a>
-                                    <a href="#remove" className="px-2 font-medium text-red-500 hover:underline">Remove</a>
+                                    <button
+                                    onClick={() => {
+                                        handleEdit(movie);
+                                    }}
+                                        className="px-2 font-medium text-indigo-500 hover:underline">
+                                        Edit
+                                    </button>
+                                    <button
+                                    onClick={() => {
+                                        const confirmed = window.confirm(`Are you sure you want to remove ${movie.title} from your diary?`);
+                                        if(confirmed) {
+                                            toggleDiary(movie);
+                                        }
+                                    }}
+                                        className="px-2 font-medium text-red-500 hover:underline">
+                                        Remove
+                                    </button>
                                 </td>
                             </tr>
                         ))
@@ -62,6 +86,14 @@ export default function DiaryPage(){
                     </tbody>
                 </table>
             </div>
+            {isDiaryModalOpen && selectedMovie && (
+                <DiaryModal
+                    isOpen={isDiaryModalOpen}
+                    movie={selectedMovie}
+                    onAdd={() => setIsDiaryModalOpen(false)}
+                    onClose={() => setIsDiaryModalOpen(false)}
+                />
+            )}
         </div>
     );
 }
